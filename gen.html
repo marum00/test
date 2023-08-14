@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UUIDサイト</title>
+</head>
+<body>
+  <script>
+    function generateRandomUUID() {
+      var characters = "abcdef0123456789";
+      var uuid = "";
+      for (var i = 0; i < 32; i++) {
+        uuid += characters[Math.floor(Math.random() * characters.length)];
+        if (i === 7 || i === 11 || i === 15 || i === 19) {
+          uuid += "-";
+        }
+      }
+      return uuid;
+    }
+
+    function generateCode() {
+      var packDescription = document.getElementById("packDescription").value;
+      var packName = document.getElementById("packName").value;
+      var moduleUUID = generateRandomUUID();
+
+      var siteData = {
+        "format_version": 1,
+        "header": {
+          "description": packDescription,
+          "name": packName,
+          "platform_locked": false,
+          "uuid": generateRandomUUID(),
+          "version": [0, 0, 1]
+        },
+        "min_engine_version": [0, 0, 1, 1, 2, 5],
+        "modules": [
+          {
+            "description": "Mq_uuid_genで生成",
+            "type": "resources",
+            "uuid": moduleUUID,
+            "version": [0, 0, 1]
+          }
+        ]
+      };
+
+      var code = JSON.stringify(siteData, null, 3);
+      document.getElementById("codeOutput").textContent = code;
+    }
+  </script>
+<label for="packName">パックの名前: </label>
+<input type="text" id="packName"><br>
+
+  <label for="packDescription">パックの説明: </label>
+  <input type="text" id="packDescription"><br>
+
+  <button onclick="generateCode()">コードを生成</button>
+  <pre id="codeOutput"></pre>
+</body>
+</html>
